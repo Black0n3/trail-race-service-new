@@ -13,7 +13,22 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('login', [\App\Http\Controllers\API\AuthController::class, 'login']);
+    Route::post('logout', [\App\Http\Controllers\API\AuthController::class, 'logout']);
+    Route::post('refresh', [\App\Http\Controllers\API\AuthController::class, 'refresh']);
+    Route::post('me', [\App\Http\Controllers\API\AuthController::class, 'me']);
+});
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->prefix('v1')->group(function() {
+    Route::resource('application', \App\Http\Controllers\API\ApplicationController::class)->except(
+        ['update','create', 'edit']
+    );
+    Route::resource('race', \App\Http\Controllers\API\RaceController::class)->except(
+        ['create', 'edit']
+    );
+
 });

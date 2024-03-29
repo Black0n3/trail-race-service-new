@@ -18,5 +18,11 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->prefix('/app')->name('app.')->group(function() {
+    Route::get('/', [App\Http\Controllers\AppController::class, 'index'])->name('homepage');
+    Route::get('/races', [\App\Http\Controllers\RaceController::class, 'index'])->name('races.index');
+    Route::get('/races/{race_id}/new-application', [\App\Http\Controllers\RaceController::class, 'newApplication'])->name('races.new_application');
+    Route::post('/races/new-application', [\App\Http\Controllers\RaceController::class, 'applicationSave'])->name('races.save_application');
+    Route::get('/applications/my', [\App\Http\Controllers\ApplicationController::class, 'myApplications'])->name('applications.my');
+    Route::delete('/applications/{id}', [\App\Http\Controllers\ApplicationController::class, 'destroy'])->name('applications.delete');
+});
