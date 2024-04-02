@@ -23,7 +23,7 @@ Route::group([
     Route::post('me', [\App\Http\Controllers\API\AuthController::class, 'me']);
 });
 
-Route::middleware('auth:api')->prefix('v1')->group(function() {
+Route::middleware(['auth:api', 'admin'])->prefix('v1')->group(function() {
     Route::resource('application', \App\Http\Controllers\API\ApplicationController::class)->except(
         ['update','create', 'edit']
     );
