@@ -14,8 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
-
         User::factory()->create([
             'first_name' => 'Test',
             'last_name' => 'User',
@@ -31,5 +29,9 @@ class DatabaseSeeder extends Seeder
             'role' => UserRoleEnum::ADMIN,
             'password' => bcrypt('123456'),
         ]);
+
+        $this->call(
+            RaceSeeder::class,
+        );
     }
 }
